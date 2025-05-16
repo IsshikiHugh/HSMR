@@ -75,10 +75,13 @@ def main():
             np.savez(outputs_root / f'{seq_name}.npz', **dump_results)
         elif inputs_meta['type'] == 'imgs':
             img_names = [f'{pipeline.name}-{fn.name}' for fn in inputs_meta['img_fns']]
-            dump_results = disassemble_dict(dump_results, keep_dim=True)
+            # Dump data for each image separately, here `i` refers to images, `j` refers to image patches.
+            cur_patch_j = 0
             for i, img_name in enumerate(tqdm(img_names, desc='Saving images')):
+                dump_results_i = {k: v[cur_patch_j:cur_patch_j+det_meta['n_patch_per_img'][i]] for k, v in dump_results.items()}
+                cur_patch_j += det_meta['n_patch_per_img'][i]
                 save_img(results[i], outputs_root / f'{img_name}.jpg')
-                np.savez(outputs_root / f'{img_name}.npz', **dump_results[i])
+                np.savez(outputs_root / f'{img_name}.npz', **dump_results_i)
 
         get_logger(brief=True).info(f'🎨 Rendering results are under {outputs_root}.')
 

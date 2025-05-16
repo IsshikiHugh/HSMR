@@ -1,5 +1,6 @@
 from lib.kits.basic import *
 
+import cv2
 import argparse
 from tqdm import tqdm
 
