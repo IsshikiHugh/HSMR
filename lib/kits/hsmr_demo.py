@@ -95,7 +95,7 @@ def imgs_det2patches(imgs, dets, downsample_ratios, max_instances_per_img):
     return patches, det_meta
 
 
-def _img_det2patches(imgs, det_instances, downsample_ratio:float, max_instances:int=5):
+def _img_det2patches(img, det_instances, downsample_ratio:float, max_instances:int=5):
     '''
     1. Filter out the trusted human detections.
     2. Enlarge the bounding boxes to aspect ratio (ViT backbone only use 192*256 pixels, make sure these 
@@ -126,7 +126,7 @@ def _img_det2patches(imgs, det_instances, downsample_ratio:float, max_instances:
     lurb_all = [fit_bbox_to_aspect_ratio(bbox=lurb, tgt_ratio=(192, 256)) for lurb in lurb_all]  # regularize the bbox size
     cs_all   = [lurb_to_cs(lurb) for lurb in lurb_all]  # convert rectangle left-up-right-bottom bbx to square center-scale bbx
     lurb_all = [cs_to_lurb(cs) for cs in cs_all]  # convert square center-scale bbx to rectangle left-up-right-bottom bbx
-    cropped_imgs = [crop_with_lurb(imgs, lurb) for lurb in lurb_all]
+    cropped_imgs = [crop_with_lurb(img, lurb) for lurb in lurb_all]
     patches = to_numpy([flex_resize_img(cropped_img, (256, 256)) for cropped_img in cropped_imgs])  # (N, 256, 256, 3)
     return patches, cs_all
 

@@ -79,6 +79,7 @@ def main():
             cur_patch_j = 0
             for i, img_name in enumerate(tqdm(img_names, desc='Saving images')):
                 dump_results_i = {k: v[cur_patch_j:cur_patch_j+det_meta['n_patch_per_img'][i]] for k, v in dump_results.items()}
+                dump_results_i['bbx_cs'] = det_meta['bbx_cs'][i]
                 cur_patch_j += det_meta['n_patch_per_img'][i]
                 save_img(results[i], outputs_root / f'{img_name}.jpg')
                 np.savez(outputs_root / f'{img_name}.npz', **dump_results_i)
