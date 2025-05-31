@@ -79,7 +79,7 @@ def real_orient_q2mat(orient_q:torch.Tensor) -> torch.Tensor:
 
     ### Args
     - orient_q: torch.Tensor, shape = (..., 3)
-    
+
     ### Returns
     - orient_mat: torch.Tensor, shape = (..., 3, 3)
     '''
