@@ -79,19 +79,31 @@ def load_inputs(args, MAX_IMG_W=1920, MAX_IMG_H=1080):
 def imgs_det2patches(imgs, dets, downsample_ratios, max_instances_per_img):
     ''' Given the raw images and the detection results, return the image patches of human instances. '''
     assert len(imgs) == len(dets), f'L_img = {len(imgs)}, L_det = {len(dets)}'
-    patches, n_patch_per_img, bbx_cs = [], [], []
+    patches_per_img, n_patch_per_img, bbx_cs_per_img = [], [], []
     for i in tqdm(range(len(imgs))):
         patches_i, bbx_cs_i = _img_det2patches(imgs[i], dets[i], downsample_ratios[i], max_instances_per_img)
         n_patch_per_img.append(len(patches_i))
         if len(patches_i) > 0:
-            patches.append(patches_i.astype(np.float32))
-            bbx_cs.append(bbx_cs_i)
+            patches_per_img.append(patches_i.astype(np.float32))
+            bbx_cs_per_img.append(bbx_cs_i)
         else:
+            patches_per_img.append(None)
+            bbx_cs_per_img.append(None)
             get_logger(brief=True).warning(f'No human detection results on image No.{i}.')
+
+    try:
+        bbx_cs = np.concatenate([x for x in bbx_cs_per_img if x is not None], axis=0)  # (N, 3), center-scale bounding boxes
+        patches = np.concatenate([x for x in patches_per_img if x is not None], axis=0)  # (N, 256, 256, 3)
+    except:
+        get_logger(brief=True).error(f'🚫 No human instance detected. Please ensure the validity of your inputs!')
+        exit(-1)
+
     det_meta = {
             'n_patch_per_img' : n_patch_per_img,
-            'bbx_cs'          : bbx_cs,
+            'bbx_cs_per_img'  : bbx_cs_per_img,
+            'bbx_cs'          : bbx_cs
         }
+
     return patches, det_meta
 
 
@@ -186,7 +198,6 @@ def visualize_patches(pd_cam_t, patches, m_skin, m_skel) -> List[np.ndarray]:
 def visualize_full_img(pd_cam_t, raw_imgs, det_meta, m_skin, m_skel, have_caption:bool=False) -> Tuple[List[np.ndarray], np.ndarray]:
     ''' Render the results to the patches. '''
     bbx_cs, n_patches_per_img = det_meta['bbx_cs'], det_meta['n_patch_per_img']
-    bbx_cs = np.concatenate(bbx_cs, axis=0)
 
     results = []
     pp = 0  # patch pointer

@@ -42,7 +42,7 @@ def main():
         get_logger(brief=True).info(f'🏃 Recovering with B={args.rec_bs}...')
         pd_params, pd_cam_t = [], []
         for bw in asb(total=len(patches), bs_scope=args.rec_bs, enable_tqdm=True):
-            patches_i = np.concatenate(patches[bw.sid:bw.eid], axis=0)  # (N, 256, 256, 3)
+            patches_i = patches[bw.sid:bw.eid]  # (N, 256, 256, 3)
             patches_normalized_i = (patches_i - IMG_MEAN_255) / IMG_STD_255  # (N, 256, 256, 3)
             patches_normalized_i = patches_normalized_i.transpose(0, 3, 1, 2)  # (N, 3, 256, 256)
             with torch.no_grad():
@@ -78,9 +78,10 @@ def main():
             # Dump data for each image separately, here `i` refers to images, `j` refers to image patches.
             cur_patch_j = 0
             for i, img_name in enumerate(tqdm(img_names, desc='Saving images')):
-                dump_results_i = {k: v[cur_patch_j:cur_patch_j+det_meta['n_patch_per_img'][i]] for k, v in dump_results.items()}
-                dump_results_i['bbx_cs'] = det_meta['bbx_cs'][i]
-                cur_patch_j += det_meta['n_patch_per_img'][i]
+                n_patch_cur_img = det_meta['n_patch_per_img'][i]
+                dump_results_i = {k: v[cur_patch_j:cur_patch_j+n_patch_cur_img] for k, v in dump_results.items()}
+                dump_results_i['bbx_cs'] = det_meta['bbx_cs_per_img'][i]
+                cur_patch_j += n_patch_cur_img
                 save_img(results[i], outputs_root / f'{img_name}.jpg')
                 np.savez(outputs_root / f'{img_name}.npz', **dump_results_i)
 
