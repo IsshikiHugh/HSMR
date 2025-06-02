@@ -52,7 +52,7 @@ def main():
 
         pd_params = assemble_dict(pd_params, expand_dim=False)  # [{k:[x]}, {k:[y]}] -> {k:[x, y]}
         pd_cam_t = torch.cat(pd_cam_t, dim=0)
-        dump_results = {
+        dump_data = {
                 'patch_cam_t' : pd_cam_t.numpy(),
                 **{k: v.numpy() for k, v in pd_params.items()},
             }
@@ -67,19 +67,28 @@ def main():
         if args.ignore_skel:
             m_skel = None
         results, full_cam_t = visualize_full_img(pd_cam_t, raw_imgs, det_meta, m_skin, m_skel, args.have_caption)
-        dump_results['full_cam_t'] = full_cam_t
+        dump_data['full_cam_t'] = full_cam_t
         # Save rendering and dump results.
         if inputs_meta['type'] == 'video':
             seq_name = f'{pipeline.name}-' + inputs_meta['seq_name']
             save_video(results, outputs_root / f'{seq_name}.mp4')
-            np.savez(outputs_root / f'{seq_name}.npz', **dump_results)
+            # Dump data for each frame, here `i` refers to frames, `j` refers to image patches.
+            dump_results = []
+            cur_patch_j = 0
+            for i in range(len(raw_imgs)):
+                n_patch_cur_img = det_meta['n_patch_per_img'][i]
+                dump_results_i = {k: v[cur_patch_j:cur_patch_j+n_patch_cur_img] for k, v in dump_data.items()}
+                dump_results_i['bbx_cs'] = det_meta['bbx_cs_per_img'][i]
+                cur_patch_j += n_patch_cur_img
+                dump_results.append(dump_results_i)
+            np.save(outputs_root / f'{seq_name}.npy', dump_results)
         elif inputs_meta['type'] == 'imgs':
             img_names = [f'{pipeline.name}-{fn.name}' for fn in inputs_meta['img_fns']]
             # Dump data for each image separately, here `i` refers to images, `j` refers to image patches.
             cur_patch_j = 0
             for i, img_name in enumerate(tqdm(img_names, desc='Saving images')):
                 n_patch_cur_img = det_meta['n_patch_per_img'][i]
-                dump_results_i = {k: v[cur_patch_j:cur_patch_j+n_patch_cur_img] for k, v in dump_results.items()}
+                dump_results_i = {k: v[cur_patch_j:cur_patch_j+n_patch_cur_img] for k, v in dump_data.items()}
                 dump_results_i['bbx_cs'] = det_meta['bbx_cs_per_img'][i]
                 cur_patch_j += n_patch_cur_img
                 save_img(results[i], outputs_root / f'{img_name}.jpg')

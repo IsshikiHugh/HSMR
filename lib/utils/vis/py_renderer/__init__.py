@@ -235,7 +235,7 @@ def render_meshes_overlay_img(
 def render_meshes_overlay_video(
     faces_all  : Union[torch.Tensor, np.ndarray],
     verts_all  : Union[torch.Tensor, np.ndarray],
-    cam_t_all   : Union[torch.Tensor, np.ndarray],
+    cam_t_all  : Union[torch.Tensor, np.ndarray],
     K4         : List,
     frames     : np.ndarray,
     output_fn  : Optional[Union[str, Path]] = None,
