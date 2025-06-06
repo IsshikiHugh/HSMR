@@ -9,7 +9,7 @@
 <a href="#"><img src="https://img.shields.io/badge/HSMR%20Demo-Released-green?logo=github"></a>
 <a href="#"><img src="https://img.shields.io/badge/HSMR%20Evaluation-Released-green?logo=github"></a>
 <a href="#"><img src="https://img.shields.io/badge/HSMR%20Training-Released-green?logo=github"></a>
-<a href="#"><img src="https://img.shields.io/badge/SKELify-TODO-red?logo=github"></a>
+<a href="#"><img src="https://img.shields.io/badge/SKELify-Released-green?logo=github"></a>
 
 <!-- ![](https://img.shields.io/github/stars/IsshikiHugh/HSMR) -->
 
@@ -69,13 +69,13 @@ python exp/run_demo.py --input_path "data_inputs/demo/example_videos/gymnasts.mp
 
 For reproducing the results in the paper, please refer to [`docs/EVAL.md`](./docs/EVAL.md) and [`docs/TRAIN.md`](./docs/TRAIN.md).
 
-<!-- We also provide the SKELify optimization pipeline, which optimizes SKEL parameters according to 2D keypoints detection. Please refer to [`docs/OPTIM.md`](./docs/OPTIM.md) for more details. -->
+We also provide the SKELify optimization pipeline, which optimizes SKEL parameters according to trustworthy 2D keypoints. Please refer to [`docs/OPTIM.md`](./docs/OPTIM.md) for more details.
 
 ## 🗓️ TODOs
 
 - [x] Release Colab demo.
 - [x] Release Huggingface demo.
-- [ ] Release SKELify pipeline.
+- [x] Release SKELify pipeline.
 - [x] Release training code & data.
 
 ## 📝 Citation

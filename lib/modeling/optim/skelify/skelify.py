@@ -64,6 +64,10 @@ class SKELify():
             - betas: torch.Tensor, (B, 10)
             - cam_t: torch.Tensor, (B, 3)
         '''
+        self.init_v = None
+        self.init_ct = None
+        self.init_kp2d_err = None
+
         with PM.time_monitor('Input Preparation'):
             gt_kp2d = to_tensor(gt_kp2d, device=self.device).detach().float().clone()  # (B, J, 3)
             init_poses = to_tensor(init_poses, device=self.device).detach().float().clone()  # (B, 46)
@@ -218,6 +222,11 @@ class SKELify():
             log_data['img_patch'] = [np.zeros((self.cfg.img_patch_size, self.cfg.img_patch_size, 3), dtype=np.uint8)] \
                                   * len(log_data['gt_kp2d'])
 
+        if self.init_v is None:
+            self.init_v = log_data['pd_verts']
+            self.init_ct = log_data['cam_t']
+            self.init_kp2d_err = log_data['kp2d_err']
+
         # Overlay the skin mesh of the results on the original image.
         try:
             imgs_spliced = []
@@ -271,10 +280,9 @@ class SKELify():
 
                 img_spliced = splice_img(
                         img_grids = [img_patch_raw, img_with_gt, img_with_pd, img_with_mesh, img_with_init],
-                        # grid_ids  = [[0, 1, 2, 3, 4]],
                         grid_ids  = [[1, 2, 3, 4]],
                     )
-                img_spliced = annotate_img(img_spliced, f'{phase_name}/{step_cnt}', pos='tl')
+                img_spliced = annotate_img(img_spliced, f'{phase_name}/{step_cnt}', pos=(32, 224))
                 imgs_spliced.append(img_spliced)
 
             img_final = splice_img(imgs_spliced, grid_ids=[[i] for i in range(len(log_data['img_patch']))])

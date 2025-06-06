@@ -17,5 +17,5 @@ exp_topic: 'SKELify-Full'
 enable_time_monitor: True
 
 logger:
-  interval: 1
-  samples_per_record: 8
+  interval_skelify: 1
+  samples_per_record: 1
