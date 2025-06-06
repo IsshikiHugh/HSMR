@@ -20,7 +20,7 @@ def annotate_img(
     - text: str
     - pos: str or tuple(int, int), default 'bl'
         - If str, one of ['tl', 'bl'].
-        - If tuple, the position of the text.
+        - If tuple, (x, y), the position of the text.
 
     ### Returns
     - np.ndarray, (H, W, 3)
@@ -44,7 +44,7 @@ def annotate_video(
     - text: str
     - pos: str or tuple(int, int), default 'bl'
         - If str, one of ['tl', 'bl'].
-        - If tuple, the position of the text.
+        - If tuple, (x, y), the position of the text.
     - alpha: float, default 0.5
         - The transparency of the text.
 
