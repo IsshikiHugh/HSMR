@@ -179,7 +179,7 @@ def flip_params_lr(poses:torch.Tensor) -> torch.Tensor:
 #         np.ndarray: Rotated axis-angle vector.
 #     """
 #     import torch
-#     from lib.body_models.skel.osim_rot import CustomJoint
+#     from skel.osim_rot import CustomJoint
 #     # q to mat
 #     root = CustomJoint(axis=[[0,0,1], [1,0,0], [0,1,0]], axis_flip=[1, 1, 1])  # pelvis
 #     q = torch.from_numpy(q).unsqueeze(0)

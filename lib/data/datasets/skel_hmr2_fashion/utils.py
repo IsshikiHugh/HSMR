@@ -496,7 +496,7 @@ def rot_q_orient(q: np.ndarray, rot: float) -> np.ndarray:
         np.ndarray: Rotated axis-angle vector.
     """
     import torch
-    from lib.body_models.skel.osim_rot import CustomJoint
+    from skel.osim_rot import CustomJoint
     from lib.utils.geometry.rotation import (
         axis_angle_to_matrix,
         matrix_to_euler_angles,

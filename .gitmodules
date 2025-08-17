@@ -1,0 +1,3 @@
+[submodule "thirdparty/SKEL"]
+	path = thirdparty/SKEL
+	url = https://github.com/MarilynKeller/SKEL.git

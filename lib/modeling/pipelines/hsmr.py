@@ -3,13 +3,13 @@ from lib.kits.basic import *
 from lib.utils.vis import Wis3D
 from lib.utils.vis.py_renderer import render_mesh_overlay_img
 from lib.utils.data import to_tensor
+from lib.utils.ckpt import match_prefix_and_remove_state_dict
 from lib.utils.media import draw_kp2d_on_img, annotate_img, splice_img
 from lib.utils.camera import perspective_projection
 from lib.body_models.abstract_skeletons import Skeleton_OpenPose25
 from lib.modeling.losses import *
 from lib.modeling.networks.discriminators import HSMRDiscriminator
 from lib.platform.config_utils import get_PM_info_dict
-
 
 def build_inference_pipeline(
     model_root: Union[Path, str],
@@ -34,7 +34,9 @@ def build_inference_pipeline(
     # 2.2. Load the checkpoint.
     if ckpt_fn is None:
         ckpt_fn = model_root / 'checkpoints' / 'hsmr.ckpt'
-    pipeline.load_state_dict(torch.load(ckpt_fn, map_location=device)['state_dict'])
+    state_dict = torch.load(ckpt_fn, map_location=device)['state_dict']
+    state_dict = match_prefix_and_remove_state_dict(state_dict, 'skel_model')
+    pipeline.load_state_dict(state_dict, strict=False)
     get_logger(brief=True).info(f'Load checkpoint from {ckpt_fn}.')
 
     pipeline.eval()

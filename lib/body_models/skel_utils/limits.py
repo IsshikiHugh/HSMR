@@ -1,7 +1,7 @@
 import math
 import torch
 
-from lib.body_models.skel.kin_skel import pose_param_names
+from skel.kin_skel import pose_param_names
 
 # Different from the original one, has some modifications.
 pose_limits = {

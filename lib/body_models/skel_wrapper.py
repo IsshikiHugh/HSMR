@@ -1,11 +1,11 @@
 from lib.kits.basic import *
 
 import pickle
+from skel.skel_model import SKEL, SKELOutput
 from smplx.vertex_joint_selector import VertexJointSelector
 from smplx.vertex_ids import vertex_ids
 from smplx.lbs import vertices2joints
 
-from lib.body_models.skel.skel_model import SKEL, SKELOutput
 
 class SKELWrapper(SKEL):
     def __init__(
