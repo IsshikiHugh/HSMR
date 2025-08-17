@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
+from skel.skel_model import SKELOutput
 from smplx.body_models import SMPLOutput
-from lib.body_models.skel.skel_model import SKELOutput
 
 
 class Keypoint2DLoss(nn.Module):

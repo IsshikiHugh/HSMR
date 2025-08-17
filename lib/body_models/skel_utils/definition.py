@@ -1,4 +1,4 @@
-from lib.body_models.skel.osim_rot import ConstantCurvatureJoint, CustomJoint, EllipsoidJoint, PinJoint, WalkerKnee
+from skel.osim_rot import ConstantCurvatureJoint, CustomJoint, EllipsoidJoint, PinJoint, WalkerKnee
 
 Q_COMPONENTS = [
     {'qid':  0, 'name': 'pelvis',    'jid':  0},

@@ -11,6 +11,7 @@
 
 ```shell
 cd /path/to/HSMR
+git submodule update --init  # fetch thirdparty code
 ```
 
 ```shell
@@ -31,6 +32,9 @@ pip install -r requirements.txt  # make sure torch version is aligned with $CUDA
 pip install "git+https://github.com/facebookresearch/detectron2.git"
 pip install "git+https://github.com/mattloper/chumpy"
 pip install -e .
+
+# Install SKEL from https://github.com/MarilynKeller/SKEL
+pip install -e thirdparty/SKEL
 ```
 
 
