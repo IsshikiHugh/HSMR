@@ -6,25 +6,25 @@ from skel.kin_skel import pose_param_names
 # Different from the original one, has some modifications.
 pose_limits = {
         'scapula_abduction_r' :  [-0.628, 0.628],  # 26
-        'scapula_elevation_r' :  [-0.4, -0.1],  # 27
-        'scapula_upward_rot_r' : [-0.190, 0.319],  # 28
+        'scapula_elevation_r' :  [-0.5, 0.6981],  # 27
+        'scapula_upward_rot_r' : [-0.5236, 1.0472],  # 28
 
         'scapula_abduction_l' :  [-0.628, 0.628],  # 36
-        'scapula_elevation_l' :  [-0.4, -0.1],  # 37
-        'scapula_upward_rot_l' : [-0.210, 0.219],  # 38
+        'scapula_elevation_l' :  [-0.5, 0.6981],  # 37
+        'scapula_upward_rot_l' : [-0.5236, 1.0472],  # 38
 
         'elbow_flexion_r' : [0, (3/4)*math.pi],  # 32
         'pro_sup_r'       : [-3/4*math.pi/2, 3/4*math.pi/2],  # 33
         'wrist_flexion_r' : [-math.pi/2, math.pi/2],  # 34
-        'wrist_deviation_r' :[-math.pi/4, math.pi/4],  # 35
+        'wrist_deviation_r' :[-1, math.pi/4],  # 35
 
         'elbow_flexion_l' : [0, (3/4)*math.pi],  # 42
         'pro_sup_l'       : [-math.pi/2, math.pi/2],  # 43
         'wrist_flexion_l' : [-math.pi/2, math.pi/2],  # 44
-        'wrist_deviation_l' :[-math.pi/4, math.pi/4],  # 45
+        'wrist_deviation_l' :[-1, math.pi/4],  # 45
 
         'lumbar_bending' : [-2/3*math.pi/4, 2/3*math.pi/4],  # 17
-        'lumbar_extension' : [-math.pi/4, math.pi/4],  # 18
+        'lumbar_extension' : [-0.9, math.pi/4],  # 18
         'lumbar_twist' :  [-math.pi/4, math.pi/4],  # 19
 
         'thorax_bending' :[-math.pi/4, math.pi/4],  # 20
