@@ -6,6 +6,15 @@ body_models:
     gender: male  # Use male since we don't have neutral model.
     joint_regressor_extra: '${_pm_.inputs}/body_models/SMPL_to_J19.pkl'
     joint_regressor_custom: '${_pm_.inputs}/body_models/J_regressor_SKEL_mix_MALE.pkl'
+    make_dense: False
+
+  skel_mix_hsmr_ddp:
+    _target_: lib.body_models.skel_wrapper.SKELWrapper
+    model_path: '${_pm_.inputs}/body_models/skel'
+    gender: male  # Use male since we don't have neutral model.
+    joint_regressor_extra: '${_pm_.inputs}/body_models/SMPL_to_J19.pkl'
+    joint_regressor_custom: '${_pm_.inputs}/body_models/J_regressor_SKEL_mix_MALE.pkl'
+    make_dense: True
 
   skel_hsmr:
     _target_: lib.body_models.skel_wrapper.SKELWrapper

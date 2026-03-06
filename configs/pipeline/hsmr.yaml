@@ -8,7 +8,8 @@ cfg:
 
   # Body Models
   # SKEL: ${_hub_.models.body_models.skel_hsmr}
-  SKEL: ${_hub_.models.body_models.skel_mix_hsmr}
+  # SKEL: ${_hub_.models.body_models.skel_mix_hsmr}
+  SKEL: ${_hub_.models.body_models.skel_mix_hsmr_ddp}
 
   # Backbone and its checkpoint.
   backbone: ???

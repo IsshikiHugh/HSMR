@@ -11,14 +11,25 @@ class SKELWrapper(SKEL):
     def __init__(
         self,
         *args,
-        joint_regressor_custom: Optional[str] = None,
-        joint_regressor_extra : Optional[str] = None,
+        joint_regressor_custom : Optional[str] = None,
+        joint_regressor_extra  : Optional[str] = None,
         update_root : bool = False,
+        make_dense  : bool = False,
         **kwargs
     ):
         ''' This wrapper aims to extend the output joints of the SKEL model which fits SMPL's portal. '''
 
         super(SKELWrapper, self).__init__(*args, **kwargs)
+
+        # Detect and convert sparse buffers from SKEL base class for DDP compatibility.
+        if make_dense:
+            for module in self.modules():
+                for name in list(module._buffers.keys()):
+                    buf = module._buffers[name]
+                    if buf is not None and buf.is_sparse:
+                        module._buffers[name] = buf.to_dense()
+        else:
+            get_logger().warning('Skipping dense conversion of sparse buffers in SKEL model. Enable this if you are using DDP training.')
 
         # The final joints are combined from three parts:
         # 1. The joints from the standard output.
